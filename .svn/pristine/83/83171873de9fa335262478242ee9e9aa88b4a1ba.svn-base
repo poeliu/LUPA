@@ -1,0 +1,16 @@
+/*
+ * aliasAnalysis.cpp
+ *
+ *  Created on: Jul 7, 2012
+ *      Author: nick
+ */
+
+#include "../../include/aliasAnalysis.h"
+
+
+aliasAnalysis::~aliasAnalysis() {}
+
+void aliasAnalysis::runOnModule(){}
+
+aliasAnalysis::aliasResult aliasAnalysis::alias(const Value *V1, unsigned V1Size,
+        const Value *V2, unsigned V2Size){return MayAlias;}

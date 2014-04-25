@@ -1,0 +1,84 @@
+/*
+ * CDG.h
+ *
+ *  Created on: Apr 26, 2012
+ *      Author: hsqfire
+ */
+
+#ifndef CDG_H_
+
+#include "llvm/Analysis/PostDominators.h"
+#include "llvm/BasicBlock.h"
+#include "llvm/Module.h"
+#include "llvm/Support/CFG.h"
+#include "llvm/Support/InstIterator.h"
+#include "llvm/Analysis/PostDominators.h"
+#include <map>
+#include <stack>
+
+using namespace std;
+using namespace llvm;
+
+namespace esp{
+class CDG{
+public:
+  /*
+   * Dependent node of each basic block
+   * map[a] = b means a is dependent on b
+   */
+  map<BasicBlock*, BasicBlock*> dependences;
+
+  /*
+   * Constructor
+   */
+  CDG();
+
+  ~CDG();
+
+  /*
+   * Build CDG for the given function
+   */
+  void buildCDG(Function *function);
+
+  /*
+   * Print CDG
+   */
+  void printCDG();
+
+private:
+  /*
+   *  Stack for depth first searching the CFG
+   */
+  stack<BasicBlock*> searchingStack;
+
+  /*
+   *  Map for depth first searching the CFG
+   */
+  map<BasicBlock*, bool> searchingFlag;
+
+  /*
+   *  Post dominator tree of the given function
+   */
+  PostDominatorTree dm;
+
+  /*
+   *  Solve dependence beginning from the top
+   *  node in the searching stack
+   */
+  void findDependences();
+
+  /*
+   *  Find dependence of the given node
+   */
+  void findDependences(BasicBlock *parent, BasicBlock *child);
+
+};
+
+}
+
+#define CDG_H_
+
+
+
+
+#endif /* CDG_H_ */

@@ -1,0 +1,46 @@
+/*
+ * Analyzer.h
+ *
+ *  Created on: Dec 26, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef ANALYZER_H_
+#define ANALYZER_H_
+
+#include "llvm/Module.h"
+#include "SymbolicState.h"
+
+/*
+ * Abstract class for analysis
+ */
+class Analyzer{
+public:
+  /*
+   * Virtual destructor
+   */
+  virtual ~Analyzer(){}
+
+  /*
+   * Pure virtual function to initialize before
+   * the analysis begin
+   */
+  virtual void initExecutor() = 0;
+
+  /*
+   * Pure virtual function to run analysis on the
+   * given module
+   * @Params
+   * module: the given module to be analyzed
+   */
+  virtual void run(llvm::Module *module) = 0;
+
+  /*
+   * Pure virtual function to close the analysis
+   * while the analyzer is still alive
+   */
+  virtual void closeAnalysis() = 0;
+};
+
+
+#endif /* ANALYZER_H_ */

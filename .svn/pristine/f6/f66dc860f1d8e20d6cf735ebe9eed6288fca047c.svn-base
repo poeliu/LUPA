@@ -1,0 +1,121 @@
+/*
+ * FunctionStatistic.h
+ *
+ *  Created on: May 10, 2012
+ *      Author: hsqfire
+ */
+
+#ifndef FUNCTIONSTATISTIC_H_
+#define FUNCTIONSTATISTIC_H_
+
+#include "Statistic.h"
+#include "../util/Log.h"
+#include "llvm/Type.h"
+#include "llvm/Value.h"
+#include <iostream>
+#include <map>
+#include <string>
+#include  <set>
+
+using namespace std;
+using namespace llvm;
+
+namespace esp{
+
+class LockData : public Statistic{
+public:
+  /*
+   * Statistic data
+   */
+  uint directLockNumber;                 // Number of lock..unlock patterns
+  uint ifLockNumber;                        // Number of if..lock..if..unlock patterns
+  uint testLockNumber;                    // Number of if(lock) patterns
+  uint otherNumber;                         // Number of other lock patterns
+  uint lockUsage;                              // Number of lock usage
+  uint callDeep;                                // Call deep of this lock
+  bool isLockWrapper;                     // lock wrapper flag
+  bool isUnlockWrapper;                 // unlock wrapper flag
+
+  /*
+   * Lock Type
+   */
+  Value *type;
+
+  LockData(){
+    directLockNumber = 0;
+    ifLockNumber        = 0;
+    testLockNumber    = 0;
+    otherNumber         = 0;
+    lockUsage              = 0;
+    callDeep                = 0;
+    isLockWrapper       = false;
+    isUnlockWrapper   = false;
+    type                       = NULL ;
+  }
+
+  ~LockData(){}
+
+  void printStatistic();
+};
+
+/*
+ * Class that stores statistic data
+ */
+class FunctionStatistic : public Statistic{
+public:
+  /*
+   * Function name
+   */
+  string functionName;
+
+  /*
+   * Statistic data
+   */
+  uint lockNumber;                           // Number of locks for each function
+  uint staticLockNumber;                 // Number of static locks
+  uint dynamicLockNumber;            // Number of dynamic locks
+  uint globalLockNumber;                // Number of global locks
+  uint localLockNumber;                  // Number of local locks
+  bool recursiveLock;                      // Is recursive function or not
+  map<Value*, LockData*> locks;  // Lock variables and statistic
+
+  /*
+   * Interface functions
+   */
+  FunctionStatistic( string name )   {
+    functionName             =  name   ;
+    lockNumber                 =           0 ;
+    staticLockNumber       =           0 ;
+    dynamicLockNumber  =           0 ;
+    globalLockNumber      =           0 ;
+    localLockNumber        =           0 ;
+    recursiveLock              =  false   ;
+    locks = map<Value*, LockData*>();
+
+  }
+
+  ~FunctionStatistic(){}
+
+  bool isLockWrapper(){
+    for(map<Value*, LockData*>::iterator it = locks.begin();
+        it != locks.end(); it++)
+      if(!(*it).second->isLockWrapper)
+        return false;
+    return true;
+  }
+
+  bool isUnlockWrapper(){
+    for(map<Value*, LockData*>::iterator it = locks.begin();
+        it != locks.end(); it++)
+      if(!(*it).second->isUnlockWrapper)
+        return false;
+    return true;
+  }
+
+  void printStatistic();
+};
+
+}
+
+
+#endif /* FUNCTIONSTATISTIC_H_ */

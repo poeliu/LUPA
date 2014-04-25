@@ -1,0 +1,175 @@
+========Enter function _Z8testLockP15pthread_mutex_t
+Build ud between: 
+mutex
+and
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+Build ud between: 
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+and
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Build ud between: 
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+and
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Build ud between: 
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+and
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Build ud between: 
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+and
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+Build ud between: 
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+and
+  br i1 %1, label %bb, label %bb1
+Build ud between: 
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+and
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+Build ud between: 
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+and
+  %5 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %4) nounwind
+Lock list:
+insert lock: pthread_mutex_lock
+@pthread_mutex_lock
+insert lock: pthread_mutex_unlock
+@pthread_mutex_unlock
+******Handle instruction:
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+******Handle instruction:
+  %"alloca point" = bitcast i32 0 to i32
+Other node here
+Instructions in worklist:
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+******Handle instruction:
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+Other node here
+Instructions in worklist:
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+******Handle instruction:
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Other node here
+Instructions in worklist:
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+******Handle instruction:
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+Other node here
+Instructions in worklist:
+  br i1 %1, label %bb, label %bb1
+******Handle instruction:
+  br i1 %1, label %bb, label %bb1
+A branch node here
+outEdges[inst]->second is NULL
+Instructions in worklist:
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  br label %return
+******Handle instruction:
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Other node here
+Instructions in worklist:
+  br label %return
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+******Handle instruction:
+  br label %return
+A merge node here
+Instructions in worklist:
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+  ret void
+******Handle instruction:
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+Other node here
+@pthread_mutex_lock
+Instructions in worklist:
+  ret void
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+******Handle instruction:
+  ret void
+Other node here
+Instructions in worklist:
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  ret void
+******Handle instruction:
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Other node here
+Instructions in worklist:
+  ret void
+  %5 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %4) nounwind
+******Handle instruction:
+  ret void
+A return node here
+Instructions in worklist:
+  %5 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %4) nounwind
+******Handle instruction:
+  %5 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %4) nounwind
+Other node here
+@pthread_mutex_unlock
+delete lock: @pthread_mutex_unlock
+Instructions in worklist:
+  br label %bb1
+******Handle instruction:
+  br label %bb1
+Other node here
+outEdges[inst] is NULL
+Instructions in worklist:
+  br label %return
+******Handle instruction:
+  br label %return
+A merge node here
+Instructions in worklist:
+  ret void
+******Handle instruction:
+  ret void
+Other node here
+Instructions in worklist:
+  ret void
+******Handle instruction:
+  ret void
+A return node here
+Instructions in worklist:
+******Handle instruction:
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+******Handle instruction:
+  %"alloca point" = bitcast i32 0 to i32
+Other node here
+Instructions in worklist:
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+******Handle instruction:
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+Other node here
+Instructions in worklist:
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+******Handle instruction:
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Other node here
+Instructions in worklist:
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+******Handle instruction:
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+Other node here
+Instructions in worklist:
+  br i1 %1, label %bb, label %bb1
+******Handle instruction:
+  br i1 %1, label %bb, label %bb1
+A branch node here
+Instructions in worklist:
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  br label %return
+******Handle instruction:
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+Other node here
+Instructions in worklist:
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+  br label %return
+******Handle instruction:
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+Other node here
+@pthread_mutex_lock
+add lock: @pthread_mutex_lock
+Instructions in worklist:
+  br label %return
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+******Handle instruction:
+  br label %return
+A merge node here

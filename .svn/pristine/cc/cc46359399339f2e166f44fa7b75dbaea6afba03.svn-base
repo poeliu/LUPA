@@ -1,0 +1,48 @@
+/*
+ * ValueFlow.h
+ *
+ *  Created on: Dec 2, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef VALUEFLOW_H_
+#define VALUEFLOW_H_
+
+#include "llvm/Value.h"
+#include "llvm/Instruction.h"
+#include "llvm/Instructions.h"
+#include "llvm/Module.h"
+#include "llvm/Function.h"
+#include <set>
+
+using namespace std;
+using namespace llvm;
+
+namespace esp{
+class Flow{
+public:
+  Value *src;
+  Value *dst;
+  CallInst *callSite;
+
+  Flow(Value *_src, Value *_dst, CallInst *_callSite = NULL)
+      :src(_src), dst(_dst){
+    callSite = _callSite;
+  }
+  ~Flow(){src = NULL; dst = NULL;}
+};
+
+class VFG{
+public:
+  set<Flow*> flows;
+  VFG();
+  ~VFG();
+  bool addFlow(Value* src, Value* dst, CallInst *callSite = NULL);
+  bool buildVFG(Module *module);
+  bool buildVFG(Function *function);
+  bool buildVFG(Function *function, CallInst *callSite);
+  set<Value*> getFlowSrc(Value *dst, CallInst *callSite = NULL);
+};
+}
+
+#endif /* VALUEFLOW_H_ */

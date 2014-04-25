@@ -1,0 +1,49 @@
+/*
+ * Expr.h
+ *
+ *  Created on: Nov 23, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef EXPR_H_
+#define EXPR_H_
+
+#ifdef USE_SOLVER
+#include "../stp/c_interface/c_interface.h"
+#endif
+#include <string>
+
+using namespace std;
+
+namespace esp{
+
+class Expression{
+public:
+  string name;      /* name of the expression */
+  unsigned width;   /* width of the expression.*/
+
+#ifdef USE_SOLVER
+  Expr expr;    //STP-style Expression
+
+  Expression(string _name, unsigned _width, Expr _expr)
+            :name(_name), width(_width), expr(_expr){};
+#else
+  bool value;       /* */
+
+  /*
+   * Constructor
+   * @Param
+   * _name: name of the boolean expression
+   * _width:width of the boolean expression
+   * _value:value of the boolean expression
+   */
+  Expression(string _name, unsigned _width, bool _value)
+            :name(_name), width(_width), value(_value){};
+#endif
+
+};
+
+}
+
+
+#endif /* EXPR_H_ */

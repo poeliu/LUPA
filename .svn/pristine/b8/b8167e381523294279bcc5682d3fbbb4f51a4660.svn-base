@@ -1,0 +1,65 @@
+/*
+ * CFG.h
+ *
+ *  Created on: Dec 11, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef CFG_H_
+#define CFG_H_
+
+#include "llvm/Value.h"
+#include "llvm/Instruction.h"
+#include "llvm/Instructions.h"
+#include "llvm/Support/CFG.h"
+#include "llvm/Support/InstIterator.h"
+#include <string>
+#include <map>
+#include <set>
+
+using namespace std;
+using namespace llvm;
+
+namespace esp{
+
+/*
+ * Global variables declaration
+ */
+extern std::map<Value*, Value*> parents;        //use and define chains
+extern std::map<Value*, std::string> names;     //names of variables
+extern std::set<Value*> arguments;              //arguments list
+
+/*
+ * Edge that is used in the CFG or data flow graph
+ */
+class Edge{
+public:
+  Instruction *src; /* source node of the edge */
+  Instruction *dst; /* destination node of the edge */
+  Edge(Instruction *_src, Instruction *_dst) : src(_src), dst(_dst){}
+  ~Edge(){}
+};
+
+/*
+ * Determine whether a loop is countered
+ * @Params
+ * value: instruction where a loop may be countered
+ */
+bool hasLoop(Value *value);
+
+
+/*
+ * Return true if the given instruction node is a
+ * conditional branch node
+ */
+bool isBranchNode(Instruction *inst);
+
+/*
+ * Return true if the given instruction node is a
+ * merge node
+ */
+bool isMergeNode(Instruction *inst);
+}
+
+
+#endif /* CFG_H_ */

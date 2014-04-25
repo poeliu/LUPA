@@ -1,0 +1,113 @@
+; ModuleID = 'twolock.bc'
+target datalayout = "e-p:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:32:64-f32:32:32-f64:32:64-v64:64:64-v128:128:128-a0:0:64-f80:32:32-n8:16:32"
+target triple = "i386-pc-linux-gnu"
+
+%struct..1__pthread_mutex_s = type { i32, i32, i32, i32, i32, %union..0._5 }
+%struct.__pthread_slist_t = type { %struct.__pthread_slist_t* }
+%union..0._5 = type { i32 }
+%union.pthread_mutex_t = type { %struct..1__pthread_mutex_s }
+
+define void @_Z8testLockP15pthread_mutex_tS0_(%union.pthread_mutex_t* %mutex, %union.pthread_mutex_t* %mutex2) nounwind {
+entry:
+  %mutex_addr = alloca %union.pthread_mutex_t*, align 4
+  %mutex2_addr = alloca %union.pthread_mutex_t*, align 4
+  %retval.0 = alloca i8
+  %"alloca point" = bitcast i32 0 to i32
+  store %union.pthread_mutex_t* %mutex, %union.pthread_mutex_t** %mutex_addr
+  store %union.pthread_mutex_t* %mutex2, %union.pthread_mutex_t** %mutex2_addr
+  %0 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %1 = icmp ne %union.pthread_mutex_t* %0, null
+  br i1 %1, label %bb, label %bb1
+
+bb:                                               ; preds = %entry
+  %2 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %3 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %2) nounwind
+  %4 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %5 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %4) nounwind
+  br label %bb1
+
+bb1:                                              ; preds = %bb, %entry
+  %6 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %7 = icmp ne %union.pthread_mutex_t* %6, null
+  br i1 %7, label %bb2, label %bb3
+
+bb2:                                              ; preds = %bb1
+  %8 = load %union.pthread_mutex_t** %mutex2_addr, align 4
+  %9 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %8) nounwind
+  %10 = load %union.pthread_mutex_t** %mutex2_addr, align 4
+  %11 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %10) nounwind
+  br label %bb3
+
+bb3:                                              ; preds = %bb2, %bb1
+  %12 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %13 = icmp ne %union.pthread_mutex_t* %12, null
+  br i1 %13, label %bb4, label %bb5
+
+bb4:                                              ; preds = %bb3
+  %14 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %15 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %14) nounwind
+  br label %bb5
+
+bb5:                                              ; preds = %bb4, %bb3
+  %16 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %17 = icmp ne %union.pthread_mutex_t* %16, null
+  br i1 %17, label %bb6, label %bb7
+
+bb6:                                              ; preds = %bb5
+  %18 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %19 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %18) nounwind
+  br label %bb7
+
+bb7:                                              ; preds = %bb6, %bb5
+  %20 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %21 = call i32 @pthread_mutex_lock(%union.pthread_mutex_t* %20) nounwind
+  %22 = icmp ne i32 %21, 0
+  %23 = zext i1 %22 to i8
+  store i8 %23, i8* %retval.0, align 1
+  %24 = load i8* %retval.0, align 1
+  %toBool = icmp ne i8 %24, 0
+  br i1 %toBool, label %bb8, label %bb9
+
+bb8:                                              ; preds = %bb7
+  %25 = load %union.pthread_mutex_t** %mutex_addr, align 4
+  %26 = call i32 @pthread_mutex_unlock(%union.pthread_mutex_t* %25) nounwind
+  br label %bb9
+
+bb9:                                              ; preds = %bb8, %bb7
+  br label %return
+
+return:                                           ; preds = %bb9
+  ret void
+}
+
+declare i32 @pthread_mutex_lock(%union.pthread_mutex_t*) nounwind
+
+declare i32 @pthread_mutex_unlock(%union.pthread_mutex_t*) nounwind
+
+define i32 @main() nounwind {
+entry:
+  %retval = alloca i32
+  %0 = alloca i32
+  %mutex = alloca %union.pthread_mutex_t*
+  %mutex2 = alloca %union.pthread_mutex_t*
+  %"alloca point" = bitcast i32 0 to i32
+  %1 = call noalias i8* @malloc(i32 24) nounwind
+  %2 = bitcast i8* %1 to %union.pthread_mutex_t*
+  store %union.pthread_mutex_t* %2, %union.pthread_mutex_t** %mutex, align 4
+  %3 = call noalias i8* @malloc(i32 24) nounwind
+  %4 = bitcast i8* %3 to %union.pthread_mutex_t*
+  store %union.pthread_mutex_t* %4, %union.pthread_mutex_t** %mutex2, align 4
+  %5 = load %union.pthread_mutex_t** %mutex, align 4
+  %6 = load %union.pthread_mutex_t** %mutex2, align 4
+  call void @_Z8testLockP15pthread_mutex_tS0_(%union.pthread_mutex_t* %5, %union.pthread_mutex_t* %6) nounwind
+  store i32 0, i32* %0, align 4
+  %7 = load i32* %0, align 4
+  store i32 %7, i32* %retval, align 4
+  br label %return
+
+return:                                           ; preds = %entry
+  %retval1 = load i32* %retval
+  ret i32 %retval1
+}
+
+declare noalias i8* @malloc(i32) nounwind

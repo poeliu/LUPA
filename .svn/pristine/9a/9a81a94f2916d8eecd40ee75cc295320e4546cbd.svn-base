@@ -1,0 +1,55 @@
+/*
+ * CFG.cpp
+ *
+ *  Created on: Dec 12, 2011
+ *      Author: hsqfire
+ */
+
+#include "CFG.h"
+
+using namespace esp;
+
+// global variables definition
+map<Value*, Value*> esp::parents = map<Value*, Value*>();
+map<Value*, std::string> esp::names = map<Value*, std::string>();
+set<Value*> esp::arguments = set<Value*>();
+
+bool esp::hasLoop(Value *value){
+  if(parents.find(value)==parents.end())
+    return false;
+  if(parents[value] == NULL)
+    return false;
+
+  Value *parent = parents[value];
+  do{
+    if(value == parent)
+      return true;
+    if(parents.find(parent)==parents.end())
+      break;
+    else
+      parent = parents[parent];
+  }while(parent != NULL);
+
+  return false;
+}
+
+bool esp::isBranchNode(Instruction *inst){
+  if(isa<BranchInst>(inst))
+    if(dyn_cast<BranchInst>(inst)->isConditional())
+      return true;
+  return false;
+}
+
+bool esp::isMergeNode(Instruction *inst){
+  //Merge node is always the first instruction of its basic block
+  Instruction *headBB = &*(inst->getParent()->begin());
+  Instruction *headFunction = &*inst_begin(inst->getParent()->getParent());
+  if(inst != headBB)
+    return false;
+  if (inst == headFunction)
+    return false;
+  if(inst->getParent()->getSinglePredecessor() == NULL &&
+      !inst->getParent()->hasAddressTaken())
+    return true;
+  return false;
+}

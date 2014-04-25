@@ -1,0 +1,53 @@
+/*
+ * GlobalStatistic.h
+ *
+ *  Created on: Apr 11, 2012
+ *      Author: hsqfire
+ */
+
+#ifndef GLOBALSTATISTIC_H_
+#define GLOBALSTATISTIC_H_
+
+#include "LockStatistic.h"
+#include "../util/Log.h"
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+namespace esp{
+
+class GlobalStatistic : public Statistic{
+public:
+
+  string applicationName;
+
+  stack<LockStatistic*> lockStatistics;
+
+  uint functionNumber;
+  uint lockFunctionNumber;
+
+  GlobalStatistic(){
+    applicationName      = ""     ;
+    functionNumber        = 0      ;
+    lockFunctionNumber = 0      ;
+    lockStatistics = stack<LockStatistic*>();
+  }
+
+  GlobalStatistic(string name){
+    applicationName      = name;
+    functionNumber        = 0      ;
+    lockFunctionNumber = 0      ;
+    lockStatistics = stack<LockStatistic*>();
+  }
+
+  ~GlobalStatistic(){}
+
+  LockStatistic* getLocal(){return lockStatistics.top();}
+
+  void printStatistic();
+};
+}
+
+
+#endif /* GLOBALSTATISTIC_H_ */

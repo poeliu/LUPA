@@ -1,0 +1,94 @@
+/*
+ * Worklist.h
+ *
+ *  Created on: Dec 16, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef WORKLIST_H_
+#define WORKLIST_H_
+
+#include <set>
+
+using namespace std;
+
+namespace esp {
+
+class Work {
+public:
+
+  /*
+   * Destructor
+   */
+  virtual ~Work();
+
+  /*
+   * Determine whether two works are the same
+   * Implemented by child class
+   */
+  virtual bool equalsTo(Work *other) = 0;
+
+  /*
+   * Print the content of the work
+   */
+  virtual void printContent() = 0;
+};
+
+class Worklist {
+protected:
+  /* work set */
+  set<Work*> works;
+
+  /*
+   * Add new work to list
+   * @Params
+   * work: pointer of the new work
+   */
+  void addToWorklist(Work* work);
+
+  /*
+   * Remove finished work from worklist
+   * @Params
+   * work: finished work
+   */
+  void removeFromWorklist(Work *work);
+
+  /*
+   * Solve work list
+   */
+  void solveWorklist();
+
+  /*
+   * Get a work from worklist.
+   * Subclass can override this function in order to
+   * define a new schedule strategy
+   */
+  virtual Work* selectAWork();
+
+public:
+  /*
+   * Constructor
+   */
+  Worklist();
+
+  /*
+   * Destructor
+   * Implemented by child class
+   */
+  virtual ~Worklist() = 0;
+
+  /*
+   * Define how to finish each work
+   * @Params
+   * work: work to be handled
+   */
+  virtual void doEachWork(Work *work) = 0;
+
+  /*
+   * Initialize or reinitialize the worklist
+   */
+  virtual void initWorklist() = 0;
+};
+
+} /* namespace esp */
+#endif /* WORKLIST_H_ */

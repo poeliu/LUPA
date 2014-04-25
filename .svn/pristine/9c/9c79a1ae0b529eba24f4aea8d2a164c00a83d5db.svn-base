@@ -1,0 +1,28 @@
+/*
+ * naming.h
+ *
+ *  Created on: Dec 1, 2011
+ *      Author: hsqfire
+ */
+
+#ifndef NAMING_H_
+#define NAMING_H_
+
+#include "llvm/Value.h"
+#include <string>
+#include <map>
+#include <set>
+#include "CFG.h"
+
+using namespace std;
+using namespace llvm;
+
+namespace esp{
+
+/* Parse value's info to string
+ * This function is used in telling different lock or constraint variables apart
+ */
+string parseName(llvm::Value *value);
+}
+
+#endif /* NAMING_H_ */

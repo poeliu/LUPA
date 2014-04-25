@@ -1,0 +1,52 @@
+/*
+ * ModuleStatistic.h
+ *
+ *  Created on: May 10, 2012
+ *      Author: hsqfire
+ */
+
+#ifndef MODULESTATISTIC_H_
+#define MODULESTATISTIC_H_
+
+#include "Statistic.h"
+#include "FunctionStatistic.h"
+#include "llvm/Module.h"
+#include <string>
+#include <iostream>
+#include <map>
+
+using namespace std;
+using namespace llvm;
+
+namespace esp {
+
+class ModuleStatistic: public Statistic {
+public:
+  string applicationName;
+
+  map<Function*, FunctionStatistic*> functionStatistics;
+
+  uint functionNumber;
+  uint lockFunctionNumber;
+
+  FunctionStatistic *currentStatistic;
+
+  ModuleStatistic(){
+    applicationName      = ""     ;
+    functionNumber        = 0      ;
+    lockFunctionNumber = 0      ;
+  }
+
+  ModuleStatistic(string name){
+    applicationName      = name;
+    functionNumber        = 0      ;
+    lockFunctionNumber = 0      ;
+  }
+
+  virtual ~ModuleStatistic(){}
+
+  virtual void printStatistic();
+};
+
+} /* namespace esp */
+#endif /* MODULESTATISTIC_H_ */
