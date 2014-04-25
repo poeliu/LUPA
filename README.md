@@ -5,14 +5,11 @@ LUPA is a lock usage pattern analysis tool for concurrency programs. the program
 
 ### Supported OS
 
-Currently, Maple is only supported on Linux platforms. We recommend to use 64-bit Linux machines. We have tested LUPA on various Linux distributions, including the following.
+Currently, LUPA is only supported on Linux platforms. We recommend to use 64-bit Linux machines. We have tested LUPA on various Linux distributions, including the following.
 
 * Redhat Enterprise Linux 5.4 (x86\_64)
 * Ubuntu Desktop 10.10 (x86\_64)
 * Ubuntu Desktop 11.04 (x86\_64)
 * Ubuntu Desktop 12.04 (x86\_64)
 
-### Software Dependencies
-
-Maple depends on the following software.
 
